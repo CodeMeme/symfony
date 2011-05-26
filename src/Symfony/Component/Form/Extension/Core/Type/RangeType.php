@@ -50,6 +50,6 @@ class RangeType extends ChoiceType
 
     public function getName()
     {
-        return 'choice';
+        return 'range';
     }
 }
