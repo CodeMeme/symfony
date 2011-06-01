@@ -286,7 +286,9 @@ class PropertyPath implements \IteratorAggregate
             $getter = 'get'.$camelProp;
             $isser = 'is'.$camelProp;
 
-            if ($reflClass->hasMethod($getter)) {
+            if ($reflClass->hasMethod($property)) {
+                return $object->$property();
+            } else if ($reflClass->hasMethod($getter)) {
                 if (!$reflClass->getMethod($getter)->isPublic()) {
                     throw new PropertyAccessDeniedException(sprintf('Method "%s()" is not public in class "%s"', $getter, $reflClass->getName()));
                 }
@@ -341,7 +343,9 @@ class PropertyPath implements \IteratorAggregate
             $reflClass = new \ReflectionClass($objectOrArray);
             $setter = 'set'.$this->camelize($property);
 
-            if ($reflClass->hasMethod($setter)) {
+            if ($reflClass->hasMethod($property)) {
+                $objectOrArray->$property($value);
+            } else if ($reflClass->hasMethod($setter)) {
                 if (!$reflClass->getMethod($setter)->isPublic()) {
                     throw new PropertyAccessDeniedException(sprintf('Method "%s()" is not public in class "%s"', $setter, $reflClass->getName()));
                 }
